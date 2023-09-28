@@ -1,0 +1,560 @@
+// const create = async(req,res) =>{
+
+// try {
+//     const {doctorName,patientName,patientPhone,date,time} = req.body;
+
+//     if(!doctorName || !patientName || !patientPhone ){
+//         return res.status(400).send({message:"Field Is Required"});
+//     }
+
+//     const booked = await Appointment.findOne({doctorName,date,time})
+
+//     if(booked){
+//         return res.status(400).send({message:"Appointment is book with this dateTime and doctor"})
+//     }
+
+//     const appointmentTime = moment(`${date} ${time}`, 'YYYY/MM/DD hh:mma');
+//     const startTime = moment(`${date} 12:00pm || 12pm`, 'YYYY/MM/DD hh:mma'); 
+//     const endTime = moment(`${date} 6:00pm || 18:00`, 'YYYY/MM/DD hh:mma'); 
+
+
+//     if (!appointmentTime.isValid() || appointmentTime < startTime || appointmentTime > endTime) {
+//       return res.status(400).send({ message: "Appointments are only available between 12:00 PM and 6:00 PM" });
+//     }
+
+//     const appointment = await new Appointment({
+//         doctorName,patientName,patientPhone,date,time
+//     })
+
+//     const appointmentBook = await appointment.save();
+//     res.status(200).send({message:"Appointment is Schedule",appointmentBook});
+// } catch (err) {
+//     res.status(400).send({error:err.message})
+    
+// }
+
+// }
+
+// const create = async (req, res) => {
+//     try {
+//       const { doctorName, patientName, patientPhone, date, time } = req.body;
+  
+//       if (!doctorName || !patientName || !patientPhone) {
+//         return res.status(400).send({ message: "Field Is Required" });
+//       }
+  
+//       const Timestart = moment(`${date} 12:00pm`, 'YYYY/MM/DD hh:mma');
+//       const Timeend = moment(`${date} 6:00pm`, 'YYYY/MM/DD hh:mma');
+  
+//       const appointmentTime = moment(`${date} ${time}`, 'YYYY/MM/DD hh:mm A');
+//       const endTime = moment(appointmentTime).add(30, 'minutes');
+//     //   const startDay = moment().startOf(Timestart,'day').fromNow();
+//     //   const endDay = moment().startOf(Timeend,'day').fromNow();
+
+//       console.log(startDay,"startday");
+//       console.log(endDay,"endday");
+
+//       console.log(appointmentTime,"appointmentTime");
+//       console.log(endTime,"endTime");
+
+//       if (appointmentTime < Timestart || appointmentTime > Timeend) {
+//         return res.status(400).send({ message: "Appointments are available between 12:00 PM and 6:00 PM" });
+//       }
+
+//       const totalMinutes = appointmentTime.hour() * 60 + appointmentTime.minute();
+//       console.log(totalMinutes,"totalMinutes");
+
+//       if (totalMinutes % 30 !== 0) {
+//         return res.status(400).send({ message: "Appointments booked in 30-minute of intervals" });
+//       }
+
+//       const booked = await Appointment.findOne({date})
+      
+//       if(booked){
+//         return res.status(400).send({message:"This slot is already booked try anather slot for booking"})
+//       }
+
+//     //   const availableApointments = await Appointment.findOne({            
+//     //     date: {
+//     //     $gte: Timestart,
+//     //     $lte: Timeend
+//     // }, status: true})
+
+//     // if(!availableApointments){
+//     //     return res.status.send({message:""})
+//     // }
+  
+//       const appointment = await new Appointment({
+//         doctorName,
+//         patientName,
+//         patientPhone,
+//         date,
+//         time,
+//       });
+  
+//       const appointmentBook = await appointment.save();
+//       res.status(200).send({ message: "Appointment is Scheduled", appointmentBook });
+//     } catch (err) {
+//       res.status(400).send({ error: err.message });
+//     }
+//   };
+
+
+// const create = async (req, res) => {
+//   try {
+//     const { doctorName, patientName, patientPhone, date, time } = req.body;
+
+//     if (!doctorName || !patientName || !patientPhone) {
+//       return res.status(400).send({ message: "Field Is Required" });
+//     }
+
+//     const Timestart = new Date(`${date} 12:00 PM`);
+//     const Timeend = new Date(`${date} 6:00 PM`);
+
+//     const appointmentTime = new Date(`${date} ${time}`);
+//     const endTime = new Date(appointmentTime.getTime() + 30 * 60000); // Add 30 minutes in milliseconds
+
+//     if (appointmentTime < Timestart || appointmentTime > Timeend) {
+//       return res.status(400).send({ message: "Appointments are available between 12:00 PM and 6:00 PM" });
+//     }
+
+//     const totalMinutes = appointmentTime.getHours() * 60 + appointmentTime.getMinutes();
+//     if (totalMinutes % 30 !== 0) {
+//       return res.status(400).send({ message: "Appointments should be booked in 30-minute intervals" });
+//     }
+
+//     const currentDate = new Date();
+//     const nextDate = new Date(currentDate);
+//     nextDate.setDate(nextDate.getDate() + 1); // Get the date for the next day
+
+//     const bookedAppointments = await Appointment.find({
+//       $or: [
+//         { date: currentDate, time: { $gte: Timestart, $lte: Timeend } },
+//         { date: nextDate, time: { $gte: Timestart, $lte: Timeend } },
+//       ],
+//     });
+
+//     if (bookedAppointments.length >= 2) {
+//       return res.status(400).send({ message: "All slots for the next day are booked, try another day" });
+//     }
+
+//     const appointment = await new Appointment({
+//       doctorName,
+//       patientName,
+//       patientPhone,
+//       date,
+//       time,
+//     });
+
+//     const appointmentBook = await appointment.save();
+//     res.status(200).send({ message: "Appointment is Scheduled", appointmentBook });
+//   } catch (err) {
+//     res.status(400).send({ error: err.message });
+//   }
+// };
+
+// const create = async (req, res) =>{
+//     try {
+//       const {doctorName,patientName,patientPhone,date,time} =req.body;
+  
+//       if(!doctorName || !patientName || !patientPhone){
+//         return res.status(400).send({ message: "Field Is Required" });
+//       }
+  
+//       const Timestart = moment(`${date} 12:00pm`,'YYYY/MM/DD hh:mma');
+//       const Timeend = moment(`${date} 6:00pm`,'YYYY/MM/DD hh:mma');
+  
+//       const appointmentTime = moment(`${date} ${time}`,'YYYY/MM/DD hh:mm A');
+//       const endTime = moment(appointmentTime).add(30,'minutes');
+  
+//       console.log(appointmentTime,"appointmentTime");
+//       console.log(endTime,"endTime");
+  
+//       if(appointmentTime.isBefore(Timestart) || appointmentTime.isAfter(Timeend)){
+//         return res.status(400).send({message:"Appointments are available between 12:00 PM and 6:00 PM"});
+//       }
+  
+//       const startOfDay = moment(Timestart).startOf('day');
+//       const minutesDiff = appointmentTime.diff(startOfDay,'minutes');
+//       if(minutesDiff % 30 !== 0){
+//         return res.status(400).send({message:"Appointments booked in 30-minute interval"});
+//       }
+  
+//       const booked = await Appointment.findOne({date,time});
+  
+//       if(booked){
+//         return res.status(400).send({message:"Slot is already booked"});
+//       }
+  
+//       const appointment = await new Appointment({
+//         doctorName,
+//         patientName,
+//         patientPhone,
+//         date,
+//         time,
+//       });
+  
+//       const appointmentBook = await appointment.save();
+//       res.status(200).send({message:"Appointment is successfully booked",appointmentBook});
+//     } catch (err) {
+//       res.status(400).send({error:err.message});
+//     }
+//   };
+  
+
+// import React, { useEffect, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { bookAppointment } from "../redux/actions/appointmentAction";
+// import { Formik, Form, Field, ErrorMessage } from "formik";
+// import { useNavigate } from "react-router-dom";
+
+// const AppointmentsBook = () => {
+
+//   const [submit, setSubmit] = useState(false);
+//   const appointments = useSelector((state) => state.appointmentsReducer.appointments);
+//   console.log(appointments, "11111111456");
+
+//   const errorMessages = useSelector((state) => state.appointmentsReducer.errorMessage);
+//   console.log(errorMessages, "errorMessages");
+
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+
+
+//   const handleSubmit = (values, { resetForm }) => {
+//     dispatch(bookAppointment(values));
+//     // navigate("/allAppointments")
+//     setSubmit(true)
+//     resetForm();
+//   };
+
+//   useEffect(() => {
+//     if (submit) {
+//       alert("Appointment Booked");
+//       setSubmit(false); 
+//     }
+//   }, [submit]);
+
+//   useEffect(() => {
+//     if (submit && appointments) {
+//     alert("Appointment Booked");
+//     setSubmit(false)
+//     }
+//     else if(errorMessages === 'Appointments booked in 30-minute of intervals'){
+//     alert("Appointments booked in 30-minute of intervals")
+//     setSubmit(false)
+//     }
+//     else if(errorMessages === 'Appointments are available between 12:00 PM and 6:00 PM'){
+//     alert('Appointments are available between 12:00 PM and 6:00 PM')
+//     setSubmit(false)
+//     }
+//   }, [appointments,submit,errorMessages]);
+
+
+
+// search wala pura
+
+
+
+// import React, { useEffect } from "react";
+// import Nav from "../components/nav";
+// import { useDispatch, useSelector } from "react-redux";
+// // import { doctorProfile } from "../redux/actions/doctorAction";
+// import { doctorSearch } from "../redux/actions/doctorAction";
+
+// const Home = () => {
+
+//     const doctor = useSelector((state) => state.doctorReducer.doctor);
+//     const dispatch = useDispatch();
+  
+//     useEffect(() => {
+//       dispatch(doctorSearch());
+//     }, [dispatch]);
+
+//   return (
+//     <div>
+//       <h1 className="heading">For Book An Appointment please login</h1>
+//       {/* <Nav/> */}
+//       <div>
+//         <p className="heading">
+//           Click Here For <a href="/login">LOGIN</a>
+//         </p>
+//       </div>
+//       <div class="input-group">
+//         <div class="container">
+//           <div className="boxes">
+//             <div style={{width:"18%"}}>
+//             <select className="form-select sel" aria-label="Default select example">
+//               <option selected>Open this select state</option>
+//               <option value="1">One</option>
+//               <option value="2">Two</option>
+//               <option value="3">Three</option>
+//             </select>
+//             </div>
+//             <div style={{width:"18%"}}>
+//             <select className="form-select sel" aria-label="Default select example">
+//               <option selected>Open this for city</option>
+//               <option value="1">One</option>
+//               <option value="2">Two</option>
+//               <option value="3">Three</option>
+//             </select>
+//             </div>
+            
+//             <div className="search_input">
+//               {" "}
+//               <input style={{ height: "46px" }} placeholder="Doctor/specialization" />{" "}
+//               <button
+//                 style={{
+//                   borderRadius: "3px",
+//                   border: "none",
+//                   background: "#00bafb",
+//                 }}
+//               >
+//                 Search
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Home;
+
+
+// import React, { useState, useEffect } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { doctorSearch } from "../redux/actions/doctorAction";
+
+// const Home = () => {
+//   const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
+
+//   const doctor = useSelector((state) => state.doctorReducer.doctor);
+//   const dispatch = useDispatch();
+
+//   useEffect(() => {
+//     dispatch(doctorSearch(searchTerm)); // Fetch doctor data based on search term
+//   }, [dispatch, searchTerm]);
+
+//   const searchResults = doctor;
+
+//   return (
+//     <div>
+//       <h1 className="heading">For Book An Appointment please login</h1>
+//       <div>
+//         <p className="heading">
+//           Click Here For <a href="/login">LOGIN</a>
+//         </p>
+//       </div>
+
+//       <div className="input-group">
+//         <div className="container">
+//         <div className="boxes">
+//              <div style={{width:"18%"}}>
+//              <select className="form-select sel" aria-label="Default select example">
+//                <option selected>Open this select state</option>
+//                <option value="1">One</option>
+//                <option value="2">Two</option>
+//                <option value="3">Three</option>
+//              </select>
+//              </div>
+//             <div style={{width:"18%"}}>
+//              <select className="form-select sel" aria-label="Default select example">
+//                <option selected>Open this for city</option>
+//                <option value="1">One</option>
+//                <option value="2">Two</option>
+//               <option value="3">Three</option>
+//              </select>
+//              </div>
+//              </div>
+//           <div className="search_input">
+//             <input
+//               style={{ height: "46px" }}
+//               placeholder="Doctor/specialization"
+//               value={searchTerm}
+//               onChange={(e) => setSearchTerm(e.target.value)}
+//             />
+//             <button
+//               style={{
+//                 borderRadius: "3px",
+//                 border: "none",
+//                 background: "#00bafb",
+//               }}
+//             >
+//               Search
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div>
+//         {searchResults && searchResults.length > 0 ? (
+//           searchResults.map((doctorInfo) => (
+//             <div key={doctorInfo.id}>
+//               <h2>{doctorInfo.doctorName}</h2>
+//               {/* Display other doctor information here */}
+//             </div>
+//           ))
+//         ) : (
+//           <p>No doctors found for the search term.</p>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Home;
+
+
+
+
+// import React, { useState, useEffect } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { doctorSearch } from "../redux/actions/doctorAction";
+
+// const Home = () => {
+//   const [searchTerm, setSearchTerm] = useState(""); // State to hold the search term
+
+//   const doctor = useSelector((state) => state.doctorReducer.search);
+//   console.log(doctor,121212121);
+//   const dispatch = useDispatch();
+
+//   useEffect(() => {
+//     dispatch(doctorSearch(searchTerm)); // Fetch doctor data based on search term
+//   }, [dispatch, searchTerm]);
+
+//   const searchResults = doctor;
+//   console.log(searchResults,"doc454545");
+  
+//   const handleSearch = () => {
+//     const filteredDoctors = doctor?.filter(
+//       (doctorInfo) =>
+//         doctorInfo.doctorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//         doctorInfo.specialization.toLowerCase().includes(searchTerm.toLowerCase())
+//     );
+
+//     return filteredDoctors;
+//     console.log(filteredDoctors,"asdfgrsgdgfg");
+//   };
+  
+//   return (
+//     <div>
+//       <h1 className="heading">For Book An Appointment please login</h1>
+//       <div>
+//         <p className="heading">
+//           Click Here For <a href="/login">LOGIN</a>
+//         </p>
+//       </div>
+//       <div className="input-group">
+//         <div className="container">
+//           <div className="search_input">
+            
+//             <input
+//               style={{ height: "46px" }}
+//               placeholder="Doctor/specialization"
+//               value={searchTerm}
+//               onChange={(e) => setSearchTerm(e.target.value)}
+//             />
+// <button
+//   style={{
+//     borderRadius: "3px",
+//     border: "none",
+//     background: "#00bafb",
+//   }}
+//   onClick={handleSearch}
+//   >
+//   Search
+// </button>
+
+//           </div>
+//         </div>
+//       </div>
+
+//       <div>
+//         {/* Display search results */}
+//         {searchResults && searchResults.length > 0 ? (
+//           <div>
+//             <h2>Search Results:</h2>
+//             {searchResults.map((doctorInfo) => (
+//               <div key={doctorInfo.id}>
+//                 <h3>{doctorInfo.doctorName}</h3>
+//                 {/* Display other doctor information here */}
+//               </div>
+//             ))}
+//           </div>
+//         ) : (
+//           <p>No doctors found for the search term.</p>
+//         )}
+//       </div>
+
+//       {/* Display other content of the page */}
+//     </div>
+//   );
+// };
+
+// export default Home;
+
+
+
+
+// show all doctors list
+
+      <div>
+      <div className="container ">
+        {allDoctor?.map((doctorInfo, index) => (
+          <div key={index} className="doctor-card">
+            <button
+              className="close-button"
+              onClick={() => handleCancel(doctorInfo._id)}
+            >
+              {/* &times; */}
+            </button>
+            <div className="doctor-image">
+              <img
+                src={"http://localhost:5001/" + doctorInfo.image}
+                alt={doctorInfo.doctorName}
+              />
+            </div>
+            <div className="doctor-details">
+              <h3>{doctorInfo.doctorName}</h3>
+              <p>
+                <span className="card"> Specialization</span>:{" "}
+                {doctorInfo.specialization}
+              </p>
+              <p>
+                {" "}
+                <span className="card"> Phone</span>:{" "}
+                {doctorInfo.doctorPhone}
+              </p>
+              <p>
+                <span className="card"> Experience</span>:{" "}
+                {doctorInfo.experience} years
+              </p>
+              <p>
+                <span className="card"> Timings</span>: {doctorInfo.timings}
+              </p>
+              <p>
+                <span className="card"> Description</span>:{" "}
+                {doctorInfo.description}
+              </p>
+              <p>
+                <span className="card"> State</span>:{" "}
+                {doctorInfo.state}
+              </p>
+              <p>
+                <span className="card"> city</span>:{" "}
+                {doctorInfo.city}
+              </p>
+
+       <div>
+        <button className="heading search-button" type="submit">
+               <NavLink to="/appointmentsBook" activeClassName="activeLink" className="searchlink">BOOK APPOINTMENT
+              </NavLink>  
+        </button>
+      </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      </div>

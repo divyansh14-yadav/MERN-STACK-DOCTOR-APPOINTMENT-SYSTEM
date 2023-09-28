@@ -1,0 +1,281 @@
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { doctorSearch,doctorState,doctorCity,getAllDoctor } from "../redux/actions/doctorAction";
+import AppointmentsBook from "./appointmentsBook";
+import { NavLink } from "react-router-dom";
+
+const Home = () => {
+  const [search, setSearch] = useState("");
+  const [state, setState] = useState("");
+  const [city,setCity] = useState("");
+  console.log(state,"allcitystate");
+
+  const searchResults = useSelector((state) => state.doctorReducer.search);
+  console.log(searchResults, "searchResults");
+
+  const statesResult = useSelector((state)=>state.doctorReducer.states);
+  console.log(statesResult,"statesResult");
+
+  const cityResult = useSelector((state)=>state.doctorReducer.city);
+  console.log(cityResult,"cityResult");
+
+  const allDoctor = useSelector((state)=>state.doctorReducer.doctorList);
+  console.log(allDoctor,"alldoctorlist");
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(doctorState()); 
+  }, [dispatch]);
+
+  useEffect(()=>{
+    dispatch(doctorCity())
+  },[dispatch])
+
+  useEffect(()=>{
+    dispatch(getAllDoctor())
+  },[dispatch])
+
+  // const handleStateChange = (event) => {
+  //   setState(event.target.value);
+  //   dispatch(doctorState(event.target.value));
+  // };
+  // const handleStateChange = (event) => {
+  //   const selectedState = event.target.value;  
+  //   setState(selectedState,state); 
+  //   dispatch(doctorCity(selectedState,state));  
+  // };
+
+  // const handleCityChange = (event) =>{
+  //   setCity(event.target.value,city)
+  //   dispatch(doctorCity(event.target.value,city))
+  // }
+
+  const handleStateChange = (event) => {
+    const selectedState = event.target.value;
+    setState(selectedState);
+    dispatch(doctorCity(selectedState, city));  
+  };
+  
+  const handleCityChange = (event) => {
+    const selectedCity = event.target.value;
+    setCity(selectedCity);
+    dispatch(doctorCity(state, selectedCity)); 
+  };
+  
+  
+  // useEffect(() => {
+  //   if (state) {
+  //     dispatch(doctorSearch({ search }));
+  //   }
+  // }, [dispatch, state]);
+
+  // const handleSearch = () => {
+  //   console.log("Search12",search);
+  //   dispatch(doctorSearch(search));
+  // };
+  const handleSearch = () => {
+    console.log("Search12", search);
+    dispatch(doctorSearch({ state, city, search }));
+  };
+  
+  const handleCancel = (doctorId) => {
+    setSearch("")
+    setCity("")
+    setState("")
+    const updatedResults = searchResults.data.filter(
+      (doctor) => doctor._id !== doctorId
+    );
+
+    dispatch({
+      type: "DOCTOR_SEARCH",
+      payload: {
+        data: updatedResults,
+      },
+    });
+  };
+
+  return (
+    <div>
+      <h1 className="heading">For Book An Appointment please login</h1>
+      <div className="heading">
+      Click Here For <NavLink to="/login" activeClassName="activeLink">LOGIN
+              </NavLink>       
+      </div>
+
+      {/* <div>
+        <button className="heading" type="submit">
+              Click Here For <NavLink to="/appointmentsBook" activeClassName="activeLink">BOOK APPOINTMENT
+              </NavLink>  
+        </button>
+      </div> */}
+      <div className="input-group">
+        <div className="container">
+          {/* Select state */}
+          <div className="boxes">
+            <div style={{ width: "18%" }}>
+              <select
+                className="form-select sel"
+                value={state}
+                onChange={handleStateChange}
+                aria-label="Default select example"
+              >
+                <option value="">Open this select state</option>
+                {statesResult?.map((state, index) => (
+                  <option key={index} value={state._id} onClick={()=>setState(state._id)}>
+                    {state.state}
+                  </option>
+                ))}
+              </select>
+            </div>
+{/* select city */}
+
+             <div style={{ width: "18%" }}>
+              <select
+                className="form-select sel"
+                value={city}
+                onChange={handleCityChange}
+                aria-label="Default select example"
+              >
+                <option value="">Open this select city</option>
+                {cityResult?.getAll?.map((city, index) => (
+                  <option key={index} value={city._id}>
+                    {city.city}
+                  </option>
+                ))}
+              </select>
+            </div>
+{/* search bar */}
+
+            <div className="search_input">
+              <input
+                style={{ height: "46px" }}
+                placeholder="Doctor/specialization"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <button
+                style={{
+                  borderRadius: "3px",
+                  border: "none",
+                  background: "#00bafb",
+                }}
+                onClick={handleSearch}
+              >
+                Search
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container">
+      {Array.isArray(searchResults?.data) ? (
+        searchResults.data?.map((doctorInfo, index) => (
+          <div key={index} className="doctor-card">
+            <button
+              className="close-button"
+              onClick={() => handleCancel(doctorInfo._id)}
+            >
+              &times;
+            </button>
+            <div className="doctor-image">
+              <img
+                src={"http://localhost:5001/" + doctorInfo.image}
+                alt={doctorInfo.doctorName}
+              />
+            </div>
+            <div className="doctor-details">
+              <h3>{doctorInfo.doctorName}</h3>
+              <p>
+                <span className="card"> Specialization</span>:{" "}
+                {doctorInfo.specialization}
+              </p>
+              <p>
+                {" "}
+                <span className="card"> Phone</span>:{" "}
+                {doctorInfo.doctorPhone}
+              </p>
+              <p>
+                <span className="card"> Experience</span>:{" "}
+                {doctorInfo.experience} years
+              </p>
+              <p>
+                <span className="card"> Timings</span>: {doctorInfo.timings}
+              </p>
+              <p>
+                <span className="card"> Description</span>:{" "}
+                {doctorInfo.description}
+              </p>
+              <p>
+                <span className="card"> State</span>:{" "}
+                {doctorInfo.state}
+              </p>
+
+       <div>
+        <button className="heading search-button" type="submit">
+               <NavLink to="/appointmentsBook" activeClassName="activeLink" className="searchlink">BOOK APPOINTMENT
+              </NavLink>  
+        </button>
+      </div>
+            </div>
+          </div>
+        ))) : (
+          <p>No search results found.</p>
+        )}
+      </div>
+      <div>
+      <div className="container ">
+        {allDoctor?.map((doctorInfo, index) => (
+          <div key={index} className="doctor-card">
+            <button
+              className="close-button"
+              onClick={() => handleCancel(doctorInfo._id)}
+            >
+              {/* &times; */}
+            </button>
+            <div className="doctor-image">
+              <img
+                src={"http://localhost:5001/" + doctorInfo.image}
+                alt={doctorInfo.doctorName}
+              />
+            </div>
+            <div className="doctor-details">
+              <h3>{doctorInfo.doctorName}</h3>
+              <p>
+                <span className="card"> Specialization</span>:{" "}
+                {doctorInfo.specialization}
+              </p>
+              <p>
+                {" "}
+                <span className="card"> Phone</span>:{" "}
+                {doctorInfo.doctorPhone}
+              </p>
+              <p>
+                <span className="card"> Experience</span>:{" "}
+                {doctorInfo.experience} years
+              </p>
+              <p>
+                <span className="card"> Timings</span>: {doctorInfo.timings}
+              </p>
+              <p>
+                <span className="card"> Description</span>:{" "}
+                {doctorInfo.description}
+              </p>
+
+       <div>
+        <button className="heading search-button" type="submit">
+               <NavLink to="/appointmentsBook" activeClassName="activeLink" className="searchlink">BOOK APPOINTMENT
+              </NavLink>  
+        </button>
+      </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      </div>
+    </div>
+  );
+};
+
+export default Home;

@@ -1,0 +1,38 @@
+.main-form{
+    width: 400px;
+    padding: 20px;
+    width: 500px;
+    margin: 0 auto;
+  }
+  
+  .form-input{
+    border-radius: 12px;
+    width: 40rem;
+  }
+  
+  .heading{
+    text-align: center;
+    /* margin-top: 20px; */
+  }
+  
+  .form-field{
+    margin-bottom: 15px;
+    position: relative;
+  } 
+  
+  .button{
+    margin-top: 10px;
+  }
+  .div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 200vh; */
+  }
+  .para{
+    margin-top: 20px;
+  }
+  .lable-from{
+    margin-top: 7px;
+  }
+ 

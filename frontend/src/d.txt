@@ -1,0 +1,186 @@
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { doctorSearch,doctorState,doctorCity } from "../redux/actions/doctorAction";
+import AppointmentsBook from "./appointmentsBook";
+
+const Home = () => {
+  const [search, setSearch] = useState("");
+  const [state, setState] = useState("");
+  const [city,setCity] = useState("");
+  console.log(city,"allcitystate");
+
+  const searchResults = useSelector((state) => state.doctorReducer.search);
+  console.log(searchResults, "searchResults");
+
+  const statesResult = useSelector((state)=>state.doctorReducer.states);
+  console.log(statesResult,"statesResult");
+
+  const cityResult = useSelector((state)=>state.doctorReducer.city) 
+  console.log(cityResult,"cityResult");
+
+  const dispatch = useDispatch();
+
+  // const handleState = () =>{
+  //   console.log("State",state);
+  //   dispatch(doctorState(state))
+
+  // }
+
+  useEffect(() => {
+    dispatch(doctorState()); 
+  }, [dispatch]);
+
+  useEffect(()=>{
+    dispatch(doctorCity())
+  },[dispatch])
+
+  const handleStateChange = (event) => {
+    setState(event.target.value);
+    dispatch(doctorState(event.target.value));
+  };
+
+  const handleCityChange = (event) =>{
+    setCity(event.target.value)
+    dispatch(doctorCity(event.target.value))
+  }
+  // useEffect(() => {
+  //   if (state) {
+  //     dispatch(doctorSearch({ search }));
+  //   }
+  // }, [dispatch, state]);
+
+  const handleSearch = () => {
+    console.log("Search",search);
+    dispatch(doctorSearch(search));
+  };
+
+  const handleCancel = (doctorId) => {
+    setSearch("")
+    setCity("")
+    setState("")
+    const updatedResults = searchResults.data.filter(
+      (doctor) => doctor._id !== doctorId
+    );
+
+    dispatch({
+      type: "DOCTOR_SEARCH",
+      payload: {
+        data: updatedResults,
+      },
+    });
+  };
+
+  return (
+    <div>
+      <h1 className="heading">For Book An Appointment please login</h1>
+      <div>
+        <p className="heading">
+          Click Here For <a href="/login">LOGIN</a>
+        </p>
+      </div>
+      <div className="input-group">
+        <div className="container">
+          {/* Select state */}
+          <div className="boxes">
+            <div style={{ width: "18%" }}>
+              <select
+                className="form-select sel"
+                value={state}
+                onChange={handleStateChange}
+                aria-label="Default select example"
+              >
+                <option value="">Open this select state</option>
+                {statesResult.map((state, index) => (
+                  <option key={index} value={state.state}>
+                    {state.state}
+                  </option>
+                ))}
+              </select>
+            </div>
+{/* select city */}
+
+             <div style={{ width: "18%" }}>
+              <select
+                className="form-select sel"
+                value={city}
+                onChange={handleCityChange}
+                aria-label="Default select example"
+              >
+                <option value="">Open this select city</option>
+                {cityResult?.getAll?.map((city, index) => (
+                  <option key={index} value={city.city}>
+                    {city.city}
+                  </option>
+                ))}
+              </select>
+            </div>
+{/* search bar */}
+
+            <div className="search_input">
+              <input
+                style={{ height: "46px" }}
+                placeholder="Doctor/specialization"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <button
+                style={{
+                  borderRadius: "3px",
+                  border: "none",
+                  background: "#00bafb",
+                }}
+                onClick={handleSearch}
+              >
+                Search
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container ">
+        {searchResults?.data?.map((doctorInfo, index) => (
+          <div key={index} className="doctor-card">
+            <button
+              className="close-button"
+              onClick={() => handleCancel(doctorInfo._id)}
+            >
+              {/* &times; */}
+            </button>
+            <div className="doctor-image">
+              <img
+                src={"http://localhost:5001/" + doctorInfo.image}
+                alt={doctorInfo.doctorName}
+              />
+            </div>
+            <div className="doctor-details">
+              <h3>{doctorInfo.doctorName}</h3>
+              <p>
+                <span className="card"> Specialization</span>:{" "}
+                {doctorInfo.specialization}
+              </p>
+              <p>
+                {" "}
+                <span className="card"> Phone</span>:{" "}
+                {doctorInfo.doctorPhone}
+              </p>
+              <p>
+                <span className="card"> Experience</span>:{" "}
+                {doctorInfo.experience} years
+              </p>
+              <p>
+                <span className="card"> Timings</span>: {doctorInfo.timings}
+              </p>
+              <p>
+                <span className="card"> Description</span>:{" "}
+                {doctorInfo.description}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Home;

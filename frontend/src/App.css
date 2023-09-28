@@ -1,0 +1,321 @@
+/* .App {
+  text-align: center;
+} */
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* home page css */
+/*  */
+.boxes {
+  display: flex;
+  justify-content: space-around;
+  margin: 35px;
+  width: inherit;
+  /* margin-left: 20rem; */
+}
+
+.search_input {
+  display: flex;
+  justify-content: center;
+  border-radius: 2px;
+}
+.sel {
+  height: 48px;
+  font-size: 15px !important;
+  width: 282px;
+}
+/* nav css */
+.nav_d {
+  font-size: 17px !important;
+}
+.gel {
+  text-decoration: none;
+}
+
+/* search cards details css */
+.diva {
+  height: 250px;
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 9px;
+}
+
+.doctor-card {
+  display: flex;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+.doctor-image {
+  flex: 1;
+  padding: 10px;
+}
+
+.doctor-image img {
+  display: flex;
+  align-content: center;
+  width: 78%;
+  justify-content: center;
+  margin: 26px 40px;
+  border-radius: 33px;
+}
+
+.doctor-details {
+  flex: 2;
+  padding: 10px;
+}
+.card {
+  font-size: 19px;
+  text-transform: inherit;
+  text-transform: capitalize;
+  font-weight: 500;
+  font-style: revert;
+  color: darkred;
+}
+/* for cancle button add on search card */
+.close-button {
+  position: absolute;
+  top: 243px;
+  right: 115px;
+  background-color: transparent;
+  font-size: 31px;
+  cursor: pointer;
+  color: rgb(226, 43, 43);
+  padding: 5px;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+}
+
+/* search link */
+.searchlink {
+  color: beige;
+}
+.search-button {
+  background-color: #157cb4;
+  margin-left: 560px;
+}
+/* for contact us social links */
+.social {
+  display: flex !important;
+  font-size: 12px;
+  gap: 7px;
+}
+
+/* select doctor */
+.selectDoctor {
+  width: 40rem;
+  height: 34px;
+  border-radius: 12px;
+  display: flex;
+  padding: 6px 12px;
+}
+/* forget password css */
+.forget {
+  margin-left: 5px;
+  width: 300px;
+  height: 35px;
+  border-radius: 12px;
+  margin-top: 30px;
+}
+.errors {
+  color: red;
+}
+
+.forgetpasword-button {
+  margin-top: 15px;
+}
+.new {
+  cursor: pointer;
+}
+/* select filed book appointment */
+
+.select {
+  width: 40rem;
+  display: flex;
+  height: 34px;
+  border-radius: 12px;
+}
+
+/* profile page css */
+
+.profilepageemail {
+  display: flex;
+  justify-content: center;
+  margin-left: 48px;
+  margin-top: -28px;
+}
+.profilepageName {
+  display: flex;
+  justify-content: center;
+  /* margin-left: 18px; */
+  margin-top: -28px;
+}
+/* doctor form css */
+.doctorForm {
+  width: 400px;
+}
+
+.doclable {
+  margin-left: 40px;
+}
+
+.docinput {
+  width: 430px;
+  height: 34px;
+  margin-left: 5px;
+}
+.statedoc {
+  width: 40rem;
+  border-radius: 12px;
+  height: 34px;
+  display: flex;
+}
+
+.search-button-admin {
+  color: blanchedalmond;
+  background-color: red;
+  width: 112px;
+  font-weight: bold;
+  /* margin-left: 560px; */
+}
+
+.search-button-admin2 {
+  color: blanchedalmond;
+  background-color: dodgerblue;
+  /* margin-left: 560px; */
+  margin-left: 20px;
+}
+/* .nav-back-colour{
+  background-color: midnightblue;
+} */
+.nav-back-colour {
+  background-color: #b3b3b3 !important;
+}
+
+/* .font-color {
+  color: antiquewhite !important;
+}
+
+.font-color:hover {
+  background-color: rgb(101, 185, 241);
+}
+
+*/
+
+.font-color {
+  /* color: antiquewhite !important; */
+  color: black;
+}
+
+.font-color:hover {
+  background-color: rgb(101, 185, 241);
+}
+.footer-about {
+  width: 25%;
+  display: flex;
+  margin-left: 462px;
+  margin-left: 422px;
+
+  margin-top: -71px;
+}
+.link {
+  font-size: large;
+  font-weight: 500;
+}
+.footer-about1 {
+  font-size: large;
+  font-weight: 500;
+  /* margin-left: 530px; */
+  margin-left: 470px;
+}
+.footer-contact {
+  /* margin-left: 343px; */
+  margin-left: 412px;
+  font-size: large;
+  font-weight: 500;
+}
+.footer-address {
+  width: 25%;
+  margin-left: 936px;
+  margin-top: -146px;
+}
+.footer-name {
+  margin-left: 935px;
+}
+.footer-phone {
+  margin-left: 935px;
+}
+.footer-row {
+  display: flex;
+  margin: 6px 29px 9px 52px;
+}
+.footer_border {
+  background: #0a0909;
+  height: 1.5px;
+}
+.register-button {
+  width: 400px;
+  border-radius: 11px;
+}
+.link-css-signIn {
+  margin-top: -10px;
+  margin-left: 5px;
+}
+.login-button {
+  width: 400px;
+  border-radius: 11px;
+}
+.link-css-singUp {
+  margin-top: -10px;
+  margin-left: 4px;
+}
+.forget-password {
+  margin-left: 5px;
+}
+.appointment-button {
+  width: 400px;
+  border-radius: 11px;
+}
+.doctor-book-button {
+  width: 400px;
+  border-radius: 10px;
+}
